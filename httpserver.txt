@@ -1,4 +1,0 @@
-# Start web server using node.js
-http-server <part_to_project>
-
-# i.e. http-server E:\Study\WEB701\Project2\!Sources\web701prj2\
