@@ -1,0 +1,100 @@
+.map-title {
+    font-family: sans-serif;
+    font-size: 20px;
+    margin-left: 225px;
+    font-weight: lighter;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#map { 
+    height: 300px;
+    width: 600px; 
+    padding: 20px;
+    margin-left: 140px;
+}
+#tooltip {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0.8;
+}
+#tooltip.hidden {
+    display: none;
+}
+#tooltip p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+}
+#tooltip ul {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 20px;
+}
+#snapshot-container{
+    width:200px;
+    height: 200px;
+}
+#snapshot{
+    max-width: 100%;
+    max-height: 100%;
+}
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1001; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: indigo; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: grey;
+    display: block;
+    transition: 0.3s
+}
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover, .offcanvas a:focus{
+    color: white;
+}
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.sidenav p {
+    padding: 0px 0px 0px 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: gold;
+}
+
+.sidenav p select, input {
+    color: black;
+}

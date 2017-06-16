@@ -1,0 +1,7 @@
+{"objects":[
+    {"sensor":{"name":"SNR-01","status":"Normal","coordinates":[-41.28,174.77],"lastCommand":["","",""]}},
+    {"sensor":{"name":"SNR-02","status":"Inactive","coordinates":[-41.29,174.76],"lastCommand":["","",""]}},
+    {"sensor":{"name":"SNR-03","status":"Normal","coordinates":[-41.30,174.79],"lastCommand":["","",""]}},
+    {"sensor":{"name":"SNR-04","status":"Alarm","coordinates":[-41.27,174.80],"lastCommand":["","",""]}},
+    {"sensor":{"name":"SNR-05","status":"Alarm","coordinates":[-41.29,174.78],"lastCommand":["","",""]}}
+]}
