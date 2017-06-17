@@ -1,6 +1,7 @@
 // Dependencies
 var express = require("express");
 var bodyParser = require("body-parser");
+var cors = require('cors')
 
 // Global
 var path = require('path');
@@ -11,10 +12,12 @@ console.log("rootPath: " + global.appRoot);
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors())
 
-// Routes
+// Apply the routes to our application
 app.use("/api", require("./routes/api"));
 
 // Start server
-app.listen(8081);
-console.log("API is running on port 8081");
+app.listen(8081, function() {
+    console.log('CORS-enabled web server listening on port 8081')
+});

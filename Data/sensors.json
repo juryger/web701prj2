@@ -1,7 +1,1 @@
-{"objects":[
-    {"sensor":{"name":"SNR-01","status":"Normal","coordinates":[-41.28,174.77],"lastCommand":["","",""]}},
-    {"sensor":{"name":"SNR-02","status":"Inactive","coordinates":[-41.29,174.76],"lastCommand":["","",""]}},
-    {"sensor":{"name":"SNR-03","status":"Normal","coordinates":[-41.30,174.79],"lastCommand":["","",""]}},
-    {"sensor":{"name":"SNR-04","status":"Alarm","coordinates":[-41.27,174.80],"lastCommand":["","",""]}},
-    {"sensor":{"name":"SNR-05","status":"Alarm","coordinates":[-41.29,174.78],"lastCommand":["","",""]}}
-]}
+{"objects":[{"sensor":{"name":"SNR-01","status":"Normal","coordinates":[-41.2747586,173.2889414],"lastCommand":["Custom","test","17/6/2017 @ 22:49:16"]}},{"sensor":{"name":"SNR-02","status":"Normal","coordinates":[-41.2840953,173.2830191],"lastCommand":["Activate","dfda","18/6/2017 @ 1:21:0"]}},{"sensor":{"name":"SNR-03","status":"Normal","coordinates":[-41.2709042,173.2838881],"lastCommand":["","",""]}},{"sensor":{"name":"SNR-04","status":"Alarm","coordinates":[-41.2753311,173.2838774],"lastCommand":["","",""]}},{"sensor":{"name":"SNR-05","status":"Alarm","coordinates":[-41.2739442,173.2903576],"lastCommand":["","",""]}}]}

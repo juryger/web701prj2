@@ -49,7 +49,13 @@
         <p><input id="btnSendCommand" type="button" class="btn btn-default" value="Send" onclick="sendCommand()"></input></p>
     </div>
 
+    <div id="notificationBar" class="alert alert-success alert-dismissable">
+        <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close" onclick="hideNotification">&times;</a>
+        <span id="notificationBarMsg"></span>
+    </div>
+
     <script type="text/javascript">	
+        var sensorData = null;
         var mapw = d3.select("#map").style("width");
         var maph = d3.select("#map").style("height") ;
         
@@ -57,48 +63,57 @@
         var tooltipw = tooltip.style("width");
 
         var commandBar = d3.select("#commandBar");
+        var notificationBar = d3.select("#notificationBar");
 
-        var map = L.map('map').setView([-41.2858, 174.7868], 13);
-        mapLink = 
-            '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        var map = L.map('map').setView([-41.2707107,173.2847786], 13);        
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; ' + mapLink + ' Contributors',
             maxZoom: 18,
             }).addTo(map);
  
+        var sensorKeyFn = function(d) { return d.sensor.name; }
+        var sensorPosXFn = function(d) { return map.latLngToLayerPoint(d.LatLng).x; }
+        var sensorPosYFn = function(d) { return map.latLngToLayerPoint(d.LatLng).y; }
+        var sensorStatusFn = function(d) {
+            if (d.sensor.status.toLowerCase() == "normal")
+                return "green";
+            else if (d.sensor.status.toLowerCase() == "inactive")
+                return "grey";
+            else if (d.sensor.status.toLowerCase() == "alarm")
+                return "red";
+        }; 
+
         // Initialize the SVG layer
-        map._initPathRoot()    
+        map._initPathRoot()        
 
         // We pick up the SVG from the map object
         var svg = d3.select("#map").select("svg"),
         g = svg.append("g");
         
-        // Passing data to the function
-        d3.json("data/sensors.json", function(collection) {
-            // Add a LatLng object to each item in the dataset
-            collection.objects.forEach(function(d) {
-                d.LatLng = new L.LatLng(
-                    d.sensor.coordinates[0],
-                    d.sensor.coordinates[1])
-            })
-		
-            var feature = g.selectAll("circle")
-                .data(collection.objects)
-                .enter().append("circle")
+        var refreshSensors = function() {
+            var features = g.selectAll("circle").data(sensorData.objects, sensorKeyFn);
+            
+            features.enter()
+                .append("circle")
                 .style("stroke", "black")  
                 .style("opacity", .6) 
-                .style("fill", function(d) {
-                    if (d.sensor.status.toLowerCase() == "normal")
-                        return "green";
-                    else if (d.sensor.status.toLowerCase() == "inactive")
-                        return "grey";
-                    else if (d.sensor.status.toLowerCase() == "alarm")
-                        return "red";
-                })
-                .attr("r", 15);
+                .style("fill", sensorStatusFn)
+                .attr("r", 15)
+                .attr("cx", sensorPosXFn)
+                .attr("cy", sensorPosYFn);
             
-            feature.on("mouseover", function(d) {
+            features.transition()
+                .duration(500)
+                .attr("fill", sensorStatusFn)
+                .attr("cx", sensorPosXFn)
+                .attr("cy", sensorPosYFn);
+
+            features.exit()
+                .remove();
+
+            features.on("mouseover", function(d) {
                 d3.select(this)
                     .transition()
                     .duration(500)
@@ -111,7 +126,7 @@
                 d3.select("#tooltip").classed("hidden", false);
             });
 
-            feature.on("mouseout", function(d) {
+            features.on("mouseout", function(d) {
                 d3.select(this)
                     .transition()
                     .duration(500)
@@ -121,24 +136,26 @@
                 d3.select("#tooltip").classed("hidden", true);
             });
 
-            feature.on("click", function(d) {
+            features.on("click", function(d) {
                 // Show command bar
                 openNav(d);
-            });
-                        
-            map.on("viewreset", update);
-            update();
+            });      
+        };
 
-            function update() {
-                feature.attr("transform", 
-                function(d) { 
-                    return "translate("+ 
-                        map.latLngToLayerPoint(d.LatLng).x +","+ 
-                        map.latLngToLayerPoint(d.LatLng).y +")";
-                    }
-                )
-            }
-        });        			 
+        // Passing data to the function
+        d3.json("data/sensors.json", function(collection) {
+            sensorData = collection;
+
+            // Add a LatLng object to each item in the dataset
+            sensorData.objects.forEach(function(d) {
+                d.LatLng = new L.LatLng(
+                    d.sensor.coordinates[0],
+                    d.sensor.coordinates[1])
+            });
+
+            map.on("viewreset", refreshSensors);
+            refreshSensors();
+        });
     </script>
 </body>
 </html>

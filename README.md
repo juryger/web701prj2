@@ -6,4 +6,5 @@ http-server <part_to_project>
 
 # Required packages install
 npm install express --save
-npm install --save body-parser
+npm install body-parser --save 
+npm install cors --save

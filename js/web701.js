@@ -34,6 +34,9 @@ function openNav(d) {
 
     applySensorStatus(commandBar.select("#status"), d.sensor.status);
 
+    $('#sbCommand').prop('selectedIndex',0);
+    $("#tbCommandParameter").val("");
+
     commandBar.select("#sbcActivate")
         .style("display", "none");
     commandBar.select("#sbcDeactivate")
@@ -49,6 +52,29 @@ function openNav(d) {
             .style("display", "block");
 
     commandBar.select("#tbCommandParameter").text("");
+
+    getSensorSnapshot(d.sensor.name);
+}
+
+function getSensorSnapshot(sensorId) {
+    var requestUrl = window.location.protocol + '//' + window.location.hostname  + ':8081/api/snapshots/' + sensorId;
+    $.ajax({
+        type:"GET",
+        url: requestUrl,
+        success: function(data){
+            if (data == ""){
+                commandBar.select("#snapshot-container")
+                    .html("<img alt='Snapshot' src='images/snapshot3.png'></img>");
+            }
+            else {
+                commandBar.select("#snapshot-container")
+                    .html("<img alt='Snapshot' src='data:image/png;base64," + data + "'></img>");
+            }
+        },
+        fail: function(data) {
+            console.error(data);
+        }
+    });
 }
 
 function applySensorStatus(statusElement, statusValue) {
@@ -71,5 +97,54 @@ function closeNav() {
 }
 
 function sendCommand() {
+    var sensorId = commandBar.select("#name").text();
+    var commandName = $('#sbCommand').find(":selected").val();
+    var commandParam = $("#tbCommandParameter").val();
 
+    if (commandName == "None") {
+        console.warn("Select command and try again.");
+        return;
+    }
+
+    var requestUrl = window.location.protocol + '//' + window.location.hostname  + ':8081/api/commands/' + sensorId;
+    $.ajax({
+        type:"POST",
+        url: requestUrl,
+        data: { "commandName": commandName, "commandParam": commandParam },
+        success: function(data){
+            var index = sensorData.objects.findIndex(x => x.sensor.name == data.sensor.name);
+            if (index >= 0)
+            {
+                data.LatLng = new L.LatLng(
+                    data.sensor.coordinates[0],
+                    data.sensor.coordinates[1]);
+
+                // remove object with old state
+                sensorData.objects.splice(index, 1);
+
+                // insert object with new state
+                sensorData.objects.splice(index, 0, data);
+
+                refreshSensors();
+
+                closeNav();
+
+                showNotification("Command has been processed.")
+            }
+        },
+        fail: function(data) {
+            console.error(data);
+        }
+    });
+}
+
+function showNotification(message) {    
+    notificationBar.select("#notificationBarMsg")
+            .text(message);
+
+    notificationBar.style("display", "block");
+}
+
+function hideNotification() {
+    notificationBar.style("display", "none");
 }
